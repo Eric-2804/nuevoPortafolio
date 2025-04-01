@@ -1,0 +1,162 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    align-items: center;
+    background: #5e2ca5;
+    color: white;
+    padding: 0;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+/* Secciones del header */
+.header-left, .header-center, .header-right {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.header-left {
+    background: #4b1f8a;
+}
+
+.header-right {
+    justify-content: flex-end;
+}
+
+/* Botón de descarga */
+.download-btn {
+    background: rgb(75, 20, 130);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    min-width: 120px;
+    text-align: center;
+}
+
+.download-btn:hover {
+    background: #d60069;
+}
+
+/* Estructura principal */
+.container {
+    display: flex;
+    min-height: 100vh;
+    flex-wrap: wrap;
+}
+
+/* Barra lateral (Perfil) */
+.sidebar {
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 2px 0px 10px rgba(0,0,0,0.1);
+}
+
+.sidebar .profile img {
+    width: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.sidebar h2 {
+    font-size: 16px;
+    color: gray;
+}
+
+.info p {
+    margin: 10px 0;
+}
+
+/* Redes Sociales */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.social-links a img {
+    width: 30px;
+    height: 30px;
+    transition: 0.3s;
+}
+
+.social-links a img:hover {
+    filter: grayscale(0%);
+}
+
+/* Sección derecha (Contenido) */
+.content {
+    width: 100%;
+    background: #f8f8f8;
+    padding: 40px;
+}
+
+.work-experience h2 {
+    color: #5e2ca5;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.job {
+    margin-bottom: 20px;
+}
+
+.job h3 {
+    font-size: 20px;
+    color: black;
+}
+
+.company {
+    color: #5e2ca5;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 14px;
+    color: gray;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Responsividad */
+@media (min-width: 768px) {
+    .container {
+        flex-wrap: nowrap;
+    }
+    .sidebar {
+        width: 40%;
+    }
+    .content {
+        width: 60%;
+    }
+    header {
+        flex-wrap: nowrap;
+    }
+}
