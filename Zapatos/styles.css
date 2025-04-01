@@ -1,0 +1,256 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor-header {
+    background-image: url(https://i0.wp.com/shoopsneakers.com/wp-content/uploads/2024/06/NIKE-TN-CLASSIC-BLANCA-AZUL.jpg?fit=1280%2C1280&ssl=1);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    height: 50vh;
+    border-bottom-left-radius: 50% 50px;
+    border-bottom-right-radius: 50% 50px;
+    position: relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+.titulo-container {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.divs-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.shop-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-principal {
+    display: flex;
+    margin: 50px;
+    gap: 30px;
+}
+
+/* Barra lateral */
+.filtros {
+    width: 25%;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+
+.filtros h3 {
+    margin-bottom: 10px;
+}
+
+.filtros ul {
+    list-style: none;
+    padding: 0;
+}
+
+.filtros ul li {
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+
+/* Productos */
+.productos {
+    width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.producto {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 400px; /* Altura de la tarjeta */
+    overflow: hidden;
+}
+
+.producto-imagen {
+    width: 100%;
+    height: 60%; /* El 60% de la tarjeta será ocupado por la imagen */
+    overflow: hidden;
+}
+
+.producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.producto-detalles {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 40%;
+}
+
+.carrito-btn {
+    background-color: #ff5a5f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    align-self: flex-end;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.carrito-btn:hover {
+    background-color: #ff3338;
+}
+
+.producto-info {
+    text-align: left;
+}
+
+.producto-nombre {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.producto-clasificacion {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.producto-precio {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* Agregar media queries para mejorar la responsividad */
+@media (max-width: 768px) {
+    .contenedor-principal {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .filtros {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .productos {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .producto {
+        width: 100%;
+    }
+}
+
+/* Añadir sombra sutil en el contenedor principal */
+.contenedor-principal {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Mejorar la apariencia del botón "Shop Now" */
+.shop-btn:hover {
+    background-color: #f4f4f4;
+    color: #333;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Mejorar la apariencia de los títulos */
+h1 {
+    font-size: 2.5rem;
+    color: white;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Sombra más intensa en productos */
+.producto {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.producto img {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+/* Estilizar los colores de las opciones */
+.color-options .color:hover {
+    border: 2px solid #333;
+}
+
+.size-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+    gap: 8px; /* Espaciado entre los elementos */
+    margin-top: 10px;
+}
+
+.size-box {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.size-box:hover {
+    background-color: #000;
+    color: #fff;
+}
+
