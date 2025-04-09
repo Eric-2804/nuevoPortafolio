@@ -5,9 +5,9 @@
 }
 
 .contenedor-header {
-    background-image: url(https://i0.wp.com/shoopsneakers.com/wp-content/uploads/2024/06/NIKE-TN-CLASSIC-BLANCA-AZUL.jpg?fit=1280%2C1280&ssl=1);
+    background-image: url(https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/655209ba-1752-47ea-89a7-b0a290ccae98/AIR+MAX+1+EASYON+%28TD%29.png);
     background-size: cover;
-    background-position: bottom;
+    background-position: center;
     background-repeat: no-repeat;
     height: 50vh;
     border-bottom-left-radius: 50% 50px;
@@ -35,6 +35,7 @@ header {
     display: flex;
     align-items: center;
     gap: 15px;
+    clip-path: ellipse(100% 100% at 50% 0%);
 }
 
 .shop-btn {
@@ -106,13 +107,15 @@ header {
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 400px; /* Altura de la tarjeta */
+    height: 400px;
+    /* Altura de la tarjeta */
     overflow: hidden;
 }
 
 .producto-imagen {
     width: 100%;
-    height: 60%; /* El 60% de la tarjeta será ocupado por la imagen */
+    height: 60%;
+    /* El 60% de la tarjeta será ocupado por la imagen */
     overflow: hidden;
 }
 
@@ -233,8 +236,10 @@ h3 {
 
 .size-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
-    gap: 8px; /* Espaciado entre los elementos */
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 columnas */
+    gap: 8px;
+    /* Espaciado entre los elementos */
     margin-top: 10px;
 }
 
@@ -252,5 +257,53 @@ h3 {
 .size-box:hover {
     background-color: #000;
     color: #fff;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    width: 90%;
+    margin-left: 5%;
+    border-radius: 15px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.pieP {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+}
+
+.pieP h5 {
+    margin: 0;
+    text-align: left;
+}
+
+.enlaces {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 15px;
+}
+
+.pieP a {
+    text-decoration: none;
+    color: rgb(55, 55, 234);
+    font-weight: bold;
+}
+
+.redes a {
+    background: linear-gradient(to right,
+    #B5B5B9,
+    #0E0F13
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
 }
 
