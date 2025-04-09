@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Formulario</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="form-mac">
+        <h2>REGISTRARSE</h2>
+
+        <form id="registroForm">
+            <input type="text" placeholder="Nombres" id="nombres">
+            <input type="text" placeholder="Apellidos" id="apellidos">
+            <input type="tel" placeholder="Número de teléfono" id="telefono">
+
+            <select id="tipoDocumento">
+                <option disabled selected>Selecciona una opción...</option>
+                <option value="cc">Cédula de ciudadanía</option>
+                <option value="ti">Tarjeta de identidad</option>
+                <option value="ce">Cédula de extranjería</option>
+            </select>
+
+            <input type="text" placeholder="Número de documento" id="documento">
+            <input type="email" placeholder="Correo electrónico" id="correo">
+            <input type="date" id="fechaNacimiento">
+
+            <button type="submit">ENVIAR</button>
+        </form>
+    </div>
+
+    <script>
+        const registros = [];
+
+        const formulario = document.getElementById('registroForm');
+
+        formulario.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const nombres = document.getElementById('nombres').value.trim();
+            const apellidos = document.getElementById('apellidos').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const tipoDocumento = document.getElementById('tipoDocumento').value;
+            const documento = document.getElementById('documento').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+
+            if (
+                !nombres || !apellidos || !telefono ||
+                tipoDocumento === "Selecciona una opción..." || !documento ||
+                !correo || !fechaNacimiento
+            ) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos incompletos',
+                    text: 'Por favor llena todos los campos antes de continuar',
+                    confirmButtonColor: '#007aff'
+                });
+                return;
+            }
+
+            const nuevoRegistro = {
+                nombres,
+                apellidos,
+                telefono,
+                tipoDocumento,
+                documento,
+                correo,
+                fechaNacimiento
+            };
+
+            registros.push(nuevoRegistro);
+
+            console.log("Registro guardado:", nuevoRegistro);
+            console.log("Todos los registros:", registros);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro exitoso',
+                text: 'Tus datos han sido guardados correctamente',
+                confirmButtonColor: '#007aff'
+            });
+
+            formulario.reset();
+        });
+    </script>
+</body>
+
+</html>
