@@ -29,8 +29,8 @@
             <input type="email" placeholder="Correo electrónico" id="correo">
             <input type="date" id="fechaNacimiento">
 
+            <h3>Genero</h3>
             <div class="genero-container">
-                <label>Género:</label><br>
                 <label><input type="radio" name="genero" value="Masculino"> Masculino</label>
                 <label><input type="radio" name="genero" value="Femenino"> Femenino</label>
                 <label><input type="radio" name="genero" value="Otro"> Otro</label>
@@ -132,12 +132,12 @@
                 const fila = document.createElement('tr');
 
                 fila.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${registro.nombres}</td>
-          <td>${registro.apellidos}</td>
-          <td>${registro.documento}</td>
-          <td>${registro.genero}</td>
-          <td><button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button></td>
+            <td>${index + 1}</td>
+            <td>${registro.nombres}</td>
+            <td>${registro.apellidos}</td>
+            <td>${registro.documento}</td>
+            <td>${registro.genero}</td>
+            <td><button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button></td>
         `;
 
                 tabla.appendChild(fila);
