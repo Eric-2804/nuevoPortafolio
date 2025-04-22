@@ -29,39 +29,69 @@
             <input type="email" placeholder="Correo electrónico" id="correo">
             <input type="date" id="fechaNacimiento">
 
+            <div class="genero-container">
+                <label>Género:</label><br>
+                <label><input type="radio" name="genero" value="Masculino"> Masculino</label>
+                <label><input type="radio" name="genero" value="Femenino"> Femenino</label>
+                <label><input type="radio" name="genero" value="Otro"> Otro</label>
+            </div>
+
             <button type="submit">ENVIAR</button>
         </form>
     </div>
 
+    <div class="tabla-registros">
+        <h2>Registros</h2>
+        <table id="tablaRegistros">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Documento</th>
+                    <th>Género</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Se llenará dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
     <script>
         const registros = [];
-
         const formulario = document.getElementById('registroForm');
+        const tabla = document.getElementById('tablaRegistros').querySelector('tbody');
 
         formulario.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const nombres = document.getElementById('nombres').value.trim();
-            const apellidos = document.getElementById('apellidos').value.trim();
-            const telefono = document.getElementById('telefono').value.trim();
-            const tipoDocumento = document.getElementById('tipoDocumento').value;
-            const documento = document.getElementById('documento').value.trim();
-            const correo = document.getElementById('correo').value.trim();
-            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+            if (!nombres) return mostrarAlerta("Por favor ingresa tus nombres");
 
-            if (
-                !nombres || !apellidos || !telefono ||
-                tipoDocumento === "Selecciona una opción..." || !documento ||
-                !correo || !fechaNacimiento
-            ) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Campos incompletos',
-                    text: 'Por favor llena todos los campos antes de continuar',
-                    confirmButtonColor: '#007aff'
-                });
-                return;
+            const apellidos = document.getElementById('apellidos').value.trim();
+            if (!apellidos) return mostrarAlerta("Por favor ingresa tus apellidos");
+
+            const telefono = document.getElementById('telefono').value.trim();
+            if (!telefono) return mostrarAlerta("Por favor ingresa tu número de teléfono");
+
+            const tipoDocumento = document.getElementById('tipoDocumento').value;
+            if (!tipoDocumento || tipoDocumento === "Selecciona una opción...") {
+                return mostrarAlerta("Selecciona un tipo de documento");
             }
+
+            const documento = document.getElementById('documento').value.trim();
+            if (!documento) return mostrarAlerta("Ingresa tu número de documento");
+
+            const correo = document.getElementById('correo').value.trim();
+            if (!correo) return mostrarAlerta("Ingresa tu correo electrónico");
+
+            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+            if (!fechaNacimiento) return mostrarAlerta("Selecciona tu fecha de nacimiento");
+
+            const genero = document.querySelector('input[name="genero"]:checked')?.value;
+            if (!genero) return mostrarAlerta("Selecciona tu género");
 
             const nuevoRegistro = {
                 nombres,
@@ -70,13 +100,13 @@
                 tipoDocumento,
                 documento,
                 correo,
-                fechaNacimiento
+                fechaNacimiento,
+                genero
             };
 
             registros.push(nuevoRegistro);
-
-            console.log("Registro guardado:", nuevoRegistro);
-            console.log("Todos los registros:", registros);
+            actualizarTabla();
+            formulario.reset();
 
             Swal.fire({
                 icon: 'success',
@@ -84,9 +114,63 @@
                 text: 'Tus datos han sido guardados correctamente',
                 confirmButtonColor: '#007aff'
             });
-
-            formulario.reset();
         });
+
+        function mostrarAlerta(mensaje) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campo requerido',
+                text: mensaje,
+                confirmButtonColor: '#007aff'
+            });
+        }
+
+        function actualizarTabla() {
+            tabla.innerHTML = "";
+
+            registros.forEach((registro, index) => {
+                const fila = document.createElement('tr');
+
+                fila.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${registro.nombres}</td>
+          <td>${registro.apellidos}</td>
+          <td>${registro.documento}</td>
+          <td>${registro.genero}</td>
+          <td><button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button></td>
+        `;
+
+                tabla.appendChild(fila);
+            });
+        }
+
+        function confirmarEliminacion(index) {
+            Swal.fire({
+                title: '¿Eliminar este registro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    eliminarRegistro(index);
+                }
+            });
+        }
+
+        function eliminarRegistro(index) {
+            registros.splice(index, 1);
+            actualizarTabla();
+            Swal.fire({
+                icon: 'success',
+                title: 'Eliminado',
+                text: 'El registro ha sido eliminado',
+                confirmButtonColor: '#007aff'
+            });
+        }
     </script>
 </body>
 

@@ -5,7 +5,8 @@
 
 body {
     margin: 0;
-    padding: 40px 20px; /* Espacio simétrico arriba y abajo */
+    padding: 40px 20px;
+    /* Espacio simétrico arriba y abajo */
     min-height: 100vh;
     background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1950&q=80');
     background-size: cover;
@@ -64,4 +65,138 @@ body {
 
 .form-mac button:hover {
     background-color: #005bb5;
+}
+
+.genero-container {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.genero-container label {
+    margin-right: 10px;
+}
+
+#tabla-datos {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#tabla-datos th,
+#tabla-datos td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+#tabla-datos th {
+    background-color: #007aff;
+    color: white;
+}
+
+#tabla-datos tr:hover {
+    background-color: rgba(0, 122, 255, 0.1);
+}
+
+.tabla-registros {
+    margin: 30px auto;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.tabla-registros h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#tablaRegistros {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tablaRegistros th,
+#tablaRegistros td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+#tablaRegistros th {
+    background-color: #007aff;
+    color: white;
+}
+
+#tablaRegistros button {
+    background-color: #ff3b30;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#tablaRegistros button:hover {
+    background-color: #c1271d;
+}
+
+.tabla-registros {
+    margin: 30px auto;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.tabla-registros h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#tablaRegistros {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tablaRegistros th,
+#tablaRegistros td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+#tablaRegistros th {
+    background-color: #007aff;
+    color: white;
+}
+
+#tablaRegistros button.eliminar-btn {
+    background-color: #ff3b30;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+#tablaRegistros button.eliminar-btn:hover {
+    background-color: #c1271d;
+}
+
+.genero-container {
+    margin: 10px 0;
 }
