@@ -48,7 +48,11 @@
                     <th>Item</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
+                    <th>Teléfono</th>
+                    <th>Tipo Doc.</th>
                     <th>Documento</th>
+                    <th>Correo</th>
+                    <th>Fecha Nac.</th>
                     <th>Género</th>
                     <th>Acciones</th>
                 </tr>
@@ -146,16 +150,20 @@
                 const fila = document.createElement('tr');
 
                 fila.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${registro.nombres}</td>
-                <td>${registro.apellidos}</td>
-                <td>${registro.documento}</td>
-                <td>${registro.genero}</td>
-                <td>
-                    <button class="editar-btn" onclick="editarRegistro(${index})">✏️ Editar</button>
-                    <button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button>
-                </td>
-            `;
+        <td>${index + 1}</td>
+        <td>${registro.nombres}</td>
+        <td>${registro.apellidos}</td>
+        <td>${registro.telefono}</td>
+        <td>${registro.tipoDocumento}</td>
+        <td>${registro.documento}</td>
+        <td>${registro.correo}</td>
+        <td>${registro.fechaNacimiento}</td>
+        <td>${registro.genero}</td>
+        <td>
+            <button class="editar-btn" onclick="editarRegistro(${index})">✏️ Editar</button>
+            <button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button>
+        </td>
+    `;
                 tabla.appendChild(fila);
             });
         }
@@ -210,6 +218,7 @@
             formulario.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+
 </body>
 
 </html>
