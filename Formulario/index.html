@@ -63,6 +63,8 @@
         const registros = [];
         const formulario = document.getElementById('registroForm');
         const tabla = document.getElementById('tablaRegistros').querySelector('tbody');
+        const botonSubmit = formulario.querySelector('button[type="submit"]');
+        let indiceEditando = -1;
 
         formulario.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -104,16 +106,28 @@
                 genero
             };
 
-            registros.push(nuevoRegistro);
+            if (indiceEditando === -1) {
+                registros.push(nuevoRegistro);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro exitoso',
+                    text: 'Tus datos han sido guardados correctamente',
+                    confirmButtonColor: '#007aff'
+                });
+            } else {
+                registros[indiceEditando] = nuevoRegistro;
+                indiceEditando = -1;
+                botonSubmit.textContent = 'ENVIAR';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro actualizado',
+                    text: 'Los datos han sido modificados correctamente',
+                    confirmButtonColor: '#007aff'
+                });
+            }
+
             actualizarTabla();
             formulario.reset();
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Registro exitoso',
-                text: 'Tus datos han sido guardados correctamente',
-                confirmButtonColor: '#007aff'
-            });
         });
 
         function mostrarAlerta(mensaje) {
@@ -132,14 +146,16 @@
                 const fila = document.createElement('tr');
 
                 fila.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${registro.nombres}</td>
-            <td>${registro.apellidos}</td>
-            <td>${registro.documento}</td>
-            <td>${registro.genero}</td>
-            <td><button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button></td>
-        `;
-
+                <td>${index + 1}</td>
+                <td>${registro.nombres}</td>
+                <td>${registro.apellidos}</td>
+                <td>${registro.documento}</td>
+                <td>${registro.genero}</td>
+                <td>
+                    <button class="editar-btn" onclick="editarRegistro(${index})">✏️ Editar</button>
+                    <button class="eliminar-btn" onclick="confirmarEliminacion(${index})">❌ Eliminar</button>
+                </td>
+            `;
                 tabla.appendChild(fila);
             });
         }
@@ -170,6 +186,28 @@
                 text: 'El registro ha sido eliminado',
                 confirmButtonColor: '#007aff'
             });
+        }
+
+        function editarRegistro(index) {
+            const registro = registros[index];
+
+            document.getElementById('nombres').value = registro.nombres;
+            document.getElementById('apellidos').value = registro.apellidos;
+            document.getElementById('telefono').value = registro.telefono;
+            document.getElementById('tipoDocumento').value = registro.tipoDocumento;
+            document.getElementById('documento').value = registro.documento;
+            document.getElementById('correo').value = registro.correo;
+            document.getElementById('fechaNacimiento').value = registro.fechaNacimiento;
+
+            const generoInputs = document.querySelectorAll('input[name="genero"]');
+            generoInputs.forEach(input => {
+                input.checked = input.value === registro.genero;
+            });
+
+            indiceEditando = index;
+            botonSubmit.textContent = 'ACTUALIZAR';
+
+            formulario.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>

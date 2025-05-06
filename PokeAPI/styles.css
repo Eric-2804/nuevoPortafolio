@@ -1,0 +1,83 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: url('https://www.transparenttextures.com/patterns/black-linen.png'), radial-gradient(circle at center, #2e2e2e, #000);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    width: 350px;
+    background: linear-gradient(145deg, rgba(255, 215, 0, 0.8), rgba(255, 255, 255, 0.1));
+    border: 8px solid gold;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(5px);
+}
+
+.card-header {
+    text-align: center;
+}
+
+.card-header img {
+    width: 150px;
+    height: auto;
+}
+
+.info {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.types,
+.weaknesses {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stats {
+    margin-top: 10px;
+}
+
+.stat {
+    margin-bottom: 8px;
+}
+
+.stat span {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.bar {
+    height: 10px;
+    background: #555;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: deepskyblue;
+    width: 60%;
+}
