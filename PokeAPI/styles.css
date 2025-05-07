@@ -1,147 +1,98 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    min-height: 100vh;
-    background: url('https://www.transparenttextures.com/patterns/black-linen.png'), radial-gradient(circle at center, #2e2e2e, #000);
+    margin: 0;
+    font-family: 'Press Start 2P', monospace;
+    background-image: url("https://i.pinimg.com/736x/9e/d7/eb/9ed7ebd951fd32e6dee5454b98811050.jpg");
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #f4d58d;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    justify-content: center;
+    height: 100vh;
 }
 
 .card {
+    background: rgba(0, 0, 0, 0.7); /* Oscuro translúcido para contraste */
+    backdrop-filter: blur(6px);    /* Efecto vidrio */
+    border: 3px solid gold;
+    box-shadow: 0 0 15px gold;
+    border-radius: 12px;
     width: 90%;
-    max-width: 960px;
-    background: linear-gradient(145deg, rgba(255, 215, 0, 0.8), rgba(255, 255, 255, 0.1));
-    border: 8px solid gold;
-    border-radius: 20px;
+    max-width: 800px;
     padding: 20px;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-    color: white;
-    backdrop-filter: blur(5px);
+    color: #fff;
 }
 
 .card-content {
     display: flex;
     gap: 20px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-}
-
-.left {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .left img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
+    width: 200px;
+    image-rendering: pixelated;
+    border: 2px solid gold;
+    background: #000;
+}
+
+.extra-info {
+    font-size: 10px;
+    margin-top: 10px;
+    color: #f8e49b;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border: 1px dashed gold;
 }
 
 .right {
-    flex: 2;
+    flex: 1;
 }
 
-.right h2 {
-    margin-bottom: 5px;
-    font-size: 2em;
-    text-align: left;
+h2 {
+    font-size: 20px;
+    color: #ffe066;
+    border-bottom: 2px dashed #f9d423;
 }
 
 .info {
-    text-align: left;
-    margin: 10px 0;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #fff;
 }
 
 .types,
 .weaknesses {
     display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
     flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
 }
 
 .tag {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    background: #7AC74C; /* Puedes ajustar según el tipo */
+    color: #000;
+    border: 1px solid #fff;
 }
 
-.stats {
-    margin-top: 10px;
-}
-
-.stat {
+.stats .stat {
     margin-bottom: 8px;
-}
-
-.stat span {
-    display: block;
-    margin-bottom: 2px;
+    font-size: 12px;
+    color: #f9f9f9;
 }
 
 .bar {
-    height: 10px;
-    background: #555;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.bar-fill {
-    height: 100%;
-    background: deepskyblue;
-    width: 60%;
-}
-
-/* Responsive para móviles */
-@media (max-width: 768px) {
-    .card-content {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .right h2,
-    .info,
-    .types,
-    .weaknesses {
-        text-align: center;
-        justify-content: center;
-    }
-}
-
-.tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px;
-    margin: 4px 4px 0 0;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.stat {
-    margin-top: 10px;
-}
-
-.bar {
-    background: #eee;
-    border-radius: 6px;
-    overflow: hidden;
+    background: #222;
     height: 8px;
-    margin-top: 4px;
+    border-radius: 4px;
+    margin-top: 2px;
 }
 
 .bar-fill {
-    background: #4caf50;
     height: 100%;
+    background: gold;
+    border-radius: 4px;
 }
