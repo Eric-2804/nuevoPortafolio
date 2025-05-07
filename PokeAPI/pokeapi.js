@@ -13,7 +13,7 @@ const statNamesEs = {
 };
 
 async function getRandomPokemon() {
-    const maxPokemon = 1010;
+    const maxPokemon = 1025;
     const id = Math.floor(Math.random() * maxPokemon) + 1;
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await res.json();
