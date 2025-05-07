@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokémon Card</title>
     <link rel="stylesheet" href="styles.css" />
+
 </head>
 
 <body>
@@ -25,8 +26,29 @@
     </div>
 
     <script>
+        const typeColors = {
+            normal: "#A8A77A",
+            fire: "#EE8130",
+            water: "#6390F0",
+            electric: "#F7D02C",
+            grass: "#7AC74C",
+            ice: "#96D9D6",
+            fighting: "#C22E28",
+            poison: "#A33EA1",
+            ground: "#E2BF65",
+            flying: "#A98FF3",
+            psychic: "#F95587",
+            bug: "#A6B91A",
+            rock: "#B6A136",
+            ghost: "#735797",
+            dragon: "#6F35FC",
+            dark: "#705746",
+            steel: "#B7B7CE",
+            fairy: "#D685AD"
+        };
+
         async function getRandomPokemon() {
-            const maxPokemon = 1010; // cantidad aproximada actual
+            const maxPokemon = 1010;
             const randomId = Math.floor(Math.random() * maxPokemon) + 1;
             const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
             const data = await res.json();
@@ -38,12 +60,29 @@
             // Tipos
             const typesContainer = document.getElementById("pokemon-types");
             typesContainer.innerHTML = "";
-            data.types.forEach(t => {
+            const typeNames = data.types.map((t) => t.type.name);
+            typeNames.forEach((typeName) => {
                 const tag = document.createElement("div");
                 tag.className = "tag";
-                tag.textContent = t.type.name.toUpperCase();
+                tag.textContent = typeName.toUpperCase();
+                tag.style.color = "#fff";
+                tag.style.border = "1px solid rgba(255, 255, 255, 0.3)";
                 typesContainer.appendChild(tag);
             });
+
+            // Degradado si tiene más de un tipo
+            if (typeNames.length > 1) {
+                const gradient = `linear-gradient(135deg, ${typeNames
+                    .map((t) => typeColors[t])
+                    .join(", ")})`;
+                document.querySelectorAll("#pokemon-types .tag").forEach((tag) => {
+                    tag.style.background = gradient;
+                });
+            } else {
+                document.querySelectorAll("#pokemon-types .tag").forEach((tag) => {
+                    tag.style.background = typeColors[typeNames[0]];
+                });
+            }
 
             // Stats
             const statsContainer = document.getElementById("pokemon-stats");
@@ -60,14 +99,11 @@
                 statsContainer.appendChild(statDiv);
             });
 
-            // Debilidades (requiere obtener los tipos)
+            // Debilidades
             const weaknessesContainer = document.getElementById("pokemon-weaknesses");
             weaknessesContainer.innerHTML = "";
-
-            // Obtener daños por tipo
             const typeUrls = data.types.map(t => t.type.url);
             const typeData = await Promise.all(typeUrls.map(url => fetch(url).then(r => r.json())));
-
             const damageRelations = typeData.flatMap(type => type.damage_relations.double_damage_from);
             const uniqueWeaknesses = [...new Set(damageRelations.map(d => d.name))];
 
@@ -75,6 +111,9 @@
                 const tag = document.createElement("div");
                 tag.className = "tag";
                 tag.textContent = w.toUpperCase();
+                tag.style.color = "#fff";
+                tag.style.border = "1px solid rgba(255, 255, 255, 0.3)";
+                tag.style.background = typeColors[w] || "#777";
                 weaknessesContainer.appendChild(tag);
             });
         }

@@ -119,3 +119,29 @@ body {
         justify-content: center;
     }
 }
+
+.tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin: 4px 4px 0 0;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.stat {
+    margin-top: 10px;
+}
+
+.bar {
+    background: #eee;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 8px;
+    margin-top: 4px;
+}
+
+.bar-fill {
+    background: #4caf50;
+    height: 100%;
+}
