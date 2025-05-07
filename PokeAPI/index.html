@@ -4,69 +4,83 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Carta Pokémon</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Pokémon Card</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <div class="card">
-        <div class="card-header">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"
-                alt="Garchomp" />
-            <h2>Garchomp</h2>
-        </div>
-        <div class="info">
-            <p>#445</p>
-            <p>Altura: 1.9m | Peso: 95kg</p>
-        </div>
-        <div class="types">
-            <span class="tag">DRAGON</span>
-            <span class="tag">GROUND</span>
-        </div>
-        <div class="weaknesses">
-            <span class="tag">ICE</span>
-            <span class="tag">DRAGON</span>
-            <span class="tag">FAIRY</span>
-        </div>
-        <div class="stats">
-            <div class="stat">
-                <span>HP: 108</span>
-                <div class="bar">
-                    <div class="bar-fill" style="width: 42%;"></div>
-                </div>
+        <div class="card-content">
+            <div class="left">
+                <img id="pokemon-image" src="" alt="Pokémon" />
             </div>
-            <div class="stat">
-                <span>Attack: 130</span>
-                <div class="bar">
-                    <div class="bar-fill" style="width: 51%;"></div>
-                </div>
-            </div>
-            <div class="stat">
-                <span>Defense: 95</span>
-                <div class="bar">
-                    <div class="bar-fill" style="width: 37%;"></div>
-                </div>
-            </div>
-            <div class="stat">
-                <span>Special Attack: 80</span>
-                <div class="bar">
-                    <div class="bar-fill" style="width: 31%;"></div>
-                </div>
-            </div>
-            <div class="stat">
-                <span>Special Defense: 85</span>
-                <div class="bar">
-                    <div class="bar-fill" style="width: 33%;"></div>
-                </div>
-            </div>
-            <div class="stat">
-                <span>Speed: 102</span>
-                <div class="bar">
-                    <div class="bar-fill" style="width: 40%;"></div>
-                </div>
+            <div class="right">
+                <h2 id="pokemon-name">Loading...</h2>
+                <div class="info" id="pokemon-id"></div>
+                <div class="types" id="pokemon-types"></div>
+                <div class="weaknesses" id="pokemon-weaknesses"></div>
+                <div class="stats" id="pokemon-stats"></div>
             </div>
         </div>
     </div>
+
+    <script>
+        async function getRandomPokemon() {
+            const maxPokemon = 1010; // cantidad aproximada actual
+            const randomId = Math.floor(Math.random() * maxPokemon) + 1;
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+            const data = await res.json();
+
+            document.getElementById("pokemon-image").src = data.sprites.other["official-artwork"].front_default;
+            document.getElementById("pokemon-name").textContent = data.name.toUpperCase();
+            document.getElementById("pokemon-id").textContent = `#${data.id}`;
+
+            // Tipos
+            const typesContainer = document.getElementById("pokemon-types");
+            typesContainer.innerHTML = "";
+            data.types.forEach(t => {
+                const tag = document.createElement("div");
+                tag.className = "tag";
+                tag.textContent = t.type.name.toUpperCase();
+                typesContainer.appendChild(tag);
+            });
+
+            // Stats
+            const statsContainer = document.getElementById("pokemon-stats");
+            statsContainer.innerHTML = "";
+            data.stats.forEach(stat => {
+                const statDiv = document.createElement("div");
+                statDiv.className = "stat";
+                statDiv.innerHTML = `
+          <span>${stat.stat.name.toUpperCase()}: ${stat.base_stat}</span>
+          <div class="bar">
+            <div class="bar-fill" style="width: ${Math.min(stat.base_stat, 100)}%;"></div>
+          </div>
+        `;
+                statsContainer.appendChild(statDiv);
+            });
+
+            // Debilidades (requiere obtener los tipos)
+            const weaknessesContainer = document.getElementById("pokemon-weaknesses");
+            weaknessesContainer.innerHTML = "";
+
+            // Obtener daños por tipo
+            const typeUrls = data.types.map(t => t.type.url);
+            const typeData = await Promise.all(typeUrls.map(url => fetch(url).then(r => r.json())));
+
+            const damageRelations = typeData.flatMap(type => type.damage_relations.double_damage_from);
+            const uniqueWeaknesses = [...new Set(damageRelations.map(d => d.name))];
+
+            uniqueWeaknesses.forEach(w => {
+                const tag = document.createElement("div");
+                tag.className = "tag";
+                tag.textContent = w.toUpperCase();
+                weaknessesContainer.appendChild(tag);
+            });
+        }
+
+        window.onload = getRandomPokemon;
+    </script>
 </body>
 
 </html>

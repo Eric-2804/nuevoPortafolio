@@ -15,7 +15,8 @@ body {
 }
 
 .card {
-    width: 350px;
+    width: 90%;
+    max-width: 960px;
     background: linear-gradient(145deg, rgba(255, 215, 0, 0.8), rgba(255, 255, 255, 0.1));
     border: 8px solid gold;
     border-radius: 20px;
@@ -25,24 +26,45 @@ body {
     backdrop-filter: blur(5px);
 }
 
-.card-header {
-    text-align: center;
+.card-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
 }
 
-.card-header img {
-    width: 150px;
+.left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left img {
+    width: 100%;
+    max-width: 300px;
     height: auto;
 }
 
+.right {
+    flex: 2;
+}
+
+.right h2 {
+    margin-bottom: 5px;
+    font-size: 2em;
+    text-align: left;
+}
+
 .info {
-    text-align: center;
+    text-align: left;
     margin: 10px 0;
 }
 
 .types,
 .weaknesses {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
     margin-bottom: 10px;
     flex-wrap: wrap;
@@ -80,4 +102,20 @@ body {
     height: 100%;
     background: deepskyblue;
     width: 60%;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .card-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right h2,
+    .info,
+    .types,
+    .weaknesses {
+        text-align: center;
+        justify-content: center;
+    }
 }
