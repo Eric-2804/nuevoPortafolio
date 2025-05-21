@@ -58,7 +58,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Se llenará dinámicamente -->
+
             </tbody>
         </table>
     </div>
@@ -111,7 +111,7 @@
             };
 
             if (indiceEditando === -1) {
-                registros.push(nuevoRegistro);
+                registros.unshift(nuevoRegistro);
                 Swal.fire({
                     icon: 'success',
                     title: 'Registro exitoso',
@@ -210,7 +210,7 @@
             const generoInputs = document.querySelectorAll('input[name="genero"]');
             generoInputs.forEach(input => {
                 input.checked = input.value === registro.genero;
-            });
+            }); 
 
             indiceEditando = index;
             botonSubmit.textContent = 'ACTUALIZAR';

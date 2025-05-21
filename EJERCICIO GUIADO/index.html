@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante</title>
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="formulario">
+            <div>
+                <h1>Restaurante</h1>
+            </div>
+            <input type="number" id="numeroMesa" placeholder="Ingresa número de mesa"> <br>
+            <input type="text" id="descripcionMesa" placeholder="Ingresa la descripcion de la mesa"> <br>
+            <input type="text" id="estadoMesa" placeholder="Ingresa el estado de la mesa"> <br>
+            <input type="number" id="numeroPersonas" placeholder="Ingresa el número de personas"> <br>
+            <button id="guardar">Guardar</button>
+        </div>
+        <div id="mesas"></div>
+    </div>
+</body>
+
+<script>
+    /* https://cdn-icons-png.flaticon.com/512/11664/11664586.png */
+    let datosMesa = []
+    let modo = 0
+    let numMesa = ""
+
+    document.getElementById("guardar").addEventListener("click", () => {
+        if (modo == 0) {
+            guardarMesa()
+            else if (modo == 1) {
+                editar
+            }
+
+            function guardarMesa() {
+                if (document.getElementById("numeroMesa").value == "") {
+                    alert("Debes ingresar el número de mesa");
+                }
+                else if (document.getElementById("descripcionMesa").value == "") {
+                    alert("Debes ingresar la descripción de la mesa");
+                }
+                else if (document.getElementById("estadoMesa").value == "") {
+                    alert("Debes ingresar el estado de la mesa");
+                }
+                else if (document.getElementById("numeroPersonas").value == "") {
+                    alert("Debes ingresar el número de personas");
+                }
+                else {
+                    let mesa = {
+                        numero: document.getElementById("numeroMesa").value,
+                        descripcion: document.getElementById("descripcionMesa").value,
+                        estado: document.getElementById("estadoMesa").value,
+                        numeroPersonas: document.getElementById("numeroPersonas").value,
+                    }
+                    console.log(mesa);
+                    alert("registro exitoso")
+                    document.getElementById("numeroMesa").value = ""
+                    document.getElementById("descripcionMesa").value = ""
+                    document.getElementById("estadoMesa").value = ""
+                    document.getElementById("numeroPersonas").value = ""
+                    datosMesa.unshift(mesa);
+                    console.log(datosMesa);
+                    pintarMesa();
+                }
+            }
+
+
+            function pintarMesa() {
+                datosMesa.forEach((item, i) => {
+                    let divCard = document.createElement("div")
+                    divCard.id = "divCard"
+                    let divImagen = document.createElement("div")
+                    let imagen = document.createElement("img")
+                    imagen.id = "mesa"
+                    imagen.src = "https://cdn-icons-png.flaticon.com/512/11664/11664586.png"
+                    divImagen.appendChild(imagen)
+                    divCard.appendChild(divImagen)
+                    document.getElementById("mesas").appendChild(divCard)
+
+                    let divTextos = document.createElement("div")
+                    let parrafoDescripcion = document.createElement("p")
+                    let numeroMesa = document.createElement("span")
+                    numeroMesa.textContent = item
+                    parrafoDescripcion.textContent = item.descripcion
+                    divTextos.appendChild(parrafoDescripcion)
+                    divCard.appendChild(divTextos)
+
+                    let cantidad = document.createElement("div")
+                    let cantidadPersonas = document.createElement("p")
+                    cantidadPersonas.textContent = item.numeroPersonas
+                    cantidad.appendChild(cantidadPersonas)
+                    divCard.appendChild(cantidad)
+
+                    let divBotones = document.createElement("div")
+                    let editar = document.createElement("button")
+                    editar.textContent = "✏️"
+                    editar.addEventListener("click", () => {
+
+                    })
+                    let eliminar = document.createElement("button")
+                    eliminar.textContent = "❌"
+                    eliminar.addEventListener("click", () => {
+                        //findIndex permite traer el indice de acuerdo a una condicion
+                        let indice = datosMesa.findIndex(it => it.numero == item.numero);
+                        console.log(indice);
+                        datosMesa.splice(indice, 1)
+                        console.log(datosMesa);
+                        pintarMesa();
+
+                    })
+                    divBotones.appendChild(editar)
+                    divBotones.appendChild(eliminar)
+                    divCard.appendChild(divBotones)
+                })
+            }
+        })
+</script>
+
+<style>
+    #divCard {
+        border: 1px solid gray;
+        border-radius: 10px;
+
+    }
+
+    #mesas {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+</style>
+
+</html>

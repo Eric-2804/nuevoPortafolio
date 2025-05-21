@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservacion de mesas</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="formulario">
+
+            <div class="campos">
+                <div>
+                    <h1>Restaurante</h1>
+                </div>
+
+                <input type="text" name="" id="nro" placeholder="nro">
+                <input type="text" name="" id="descripcion" placeholder="descricion">
+                <input type="text" name="" id="personas" placeholder="personas">
+                <select id="estado">
+                    <option value="libre">Libre</option>
+                    <option value="ocupada">Ocupada</option>
+                    <option value="reservada">Reservada</option>
+                </select>
+
+                <button id="registrar">Guardar Mesa</button>
+            </div>
+        </div>
+
+        <div class="buscador">
+            <input type="text" id="buscar" placeholder="Buscar mesa...">
+            <button id="btnBuscar">Buscar</button>
+            <button id="btnLimpiar">Limpiar</button>
+        </div>
+
+        <div id="mesas"></div>
+
+        <!-- Botón para abrir el modal -->
+        <button id="btnMostrarMesas">Mostrar Mesas</button>
+
+        <!-- Modal -->
+        <div id="modalMesas" class="modal">
+            <div class="modal-contenido">
+                <span class="cerrar" id="cerrarModal">&times;</span>
+                <h2>Listado de Mesas</h2>
+                <div id="mesas"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        /* https://img.freepik.com/vector-premium/dibujos-animados-mesa_119631-412.jpg */
+        let datosMesa = []
+        let modo = 0
+        let numMesa = ""
+
+
+        document.getElementById("registrar").addEventListener("click", () => {
+            if (modo == 0) {
+                console.log("estoy guardando...");
+
+                guardarMesa()
+            } else if (modo == 1) {
+
+                console.log("estoy editando...");
+                editarMesa()
+            }
+
+        })
+
+        function cambiarColor() {
+            if (item.estado === "ocupada") {
+                divCard.style.backgroundColor = "red";
+            } else if (item.estado === "reservada") {
+                divCard.style.backgroundColor = "orange"
+            }
+        }
+
+        function guardarMesa() {
+            if (document.getElementById("nro").value == "") {
+                Swal.fire("Campo vacío", "Por favor digite el número de mesa", "warning")
+            } else if (document.getElementById("descripcion").value == "") {
+                Swal.fire("Campo vacío", "Por favor digite la descripción", "warning")
+            } else if (document.getElementById("personas").value == "") {
+                Swal.fire("Campo vacío", "Por favor digite la capacidad de la mesa", "warning")
+            } else if (document.getElementById("estado").value == "") {
+                Swal.fire("Campo vacío", "Por favor digite el estado de la mesa", "warning")
+            } else {
+                //validacion de mesa repetida
+                if (modo === 0 && datosMesa.some(mesa => mesa.numero === document.getElementById("nro").value)) {
+                    Swal.fire("Mesa duplicada", "Ya existe una mesa con este número", "error");
+                    return;
+                }
+
+                let mesa = {
+                    numero: document.getElementById("nro").value,
+                    descripcion: document.getElementById("descripcion").value,
+                    personas: document.getElementById("personas").value,
+                    estado: document.getElementById("estado").value,
+                }
+                console.log(mesa);
+                datosMesa.unshift(mesa)
+                Swal.fire("¡Éxito!", "Registro exitoso", "success")
+                limpiar()
+                console.log(datosMesa);
+                pintarMesas();
+
+            }
+        }
+
+        function limpiar() {
+            document.getElementById("nro").value = ""
+            document.getElementById("descripcion").value = ""
+            document.getElementById("personas").value = ""
+            document.getElementById("estado").value = ""
+        }
+
+        function editarMesa() {
+            let indice = datosMesa.findIndex(it => it.numero == numMesa)
+            console.log(indice);
+            datosMesa[indice].numero = document.getElementById("nro").value
+            datosMesa[indice].descripcion = document.getElementById("descripcion").value
+            datosMesa[indice].personas = document.getElementById("personas").value
+            datosMesa[indice].estado = document.getElementById("estado").value
+            pintarMesas()
+            modo = 0
+            document.getElementById("registrar").textContent = "Guardar Mesa"
+            limpiar()
+        }
+
+        function pintarMesas(filtradas) {
+            document.getElementById("mesas").textContent = ""
+            datosMesa.forEach((item, i) => {
+                let divCard = document.createElement("div")
+                divCard.id = "divCard"
+                let divImagen = document.createElement("div")
+                let imagen = document.createElement("img")
+                imagen.id = "mesa"
+                imagen.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Ru7ZYmZfb41oq__EzwzLiRIaMiE20gH90g&s"
+                divImagen.appendChild(imagen)
+                divCard.appendChild(divImagen)
+
+                document.getElementById("mesas").appendChild(divCard)
+                let divTextos = document.createElement("div")
+                let parrafoDescripcion = document.createElement("p")
+                let numeroMesa = document.createElement("span")
+                numeroMesa.textContent = item.numero
+                parrafoDescripcion.textContent = item.descripcion
+                divTextos.appendChild(parrafoDescripcion)
+                divTextos.appendChild(numeroMesa)
+                divCard.appendChild(divTextos)
+                let divBotones = document.createElement("div")
+                let editar = document.createElement("button")
+                editar.textContent = "📝"
+                editar.addEventListener("click", () => {
+                    document.getElementById("nro").value = item.numero
+                    document.getElementById("descripcion").value = item.descripcion
+                    document.getElementById("personas").value = item.personas
+                    document.getElementById("estado").value = item.estado
+                    document.getElementById("registrar").textContent = "Editar Mesa"
+                    modo = 1
+                    numMesa = item.numero
+                })
+                let eliminar = document.createElement("button")
+                eliminar.textContent = "❌"
+                eliminar.addEventListener("click", () => {
+                    //findIndex nos permite traer el indice de acuerdo a una condicion
+                    let indice = datosMesa.findIndex(it => it.numero == item.numero)
+                    console.log(indice);
+                    datosMesa.splice(indice, 1)
+                    console.log(datosMesa);
+                    pintarMesas()
+
+                })
+                divBotones.appendChild(editar)
+                divBotones.appendChild(eliminar)
+                divCard.appendChild(divBotones)
+            })
+        }
+
+        function buscarMesa() {
+            document.getElementById("btnBuscar").addEventListener("click", () => {
+                let texto = document.getElementById("buscar").value.toLowerCase();
+                if (texto === "") {
+                    Swal.fire("Campo vacío", "Por favor ingresa un criterio de búsqueda", "warning");
+                    return;
+                }
+
+                let filtradas = datosMesa.filter(mesa =>
+                    mesa.numero.toLowerCase().includes(texto) ||
+                    mesa.descripcion.toLowerCase().includes(texto) ||
+                    mesa.estado.toLowerCase().includes(texto)
+                );
+
+                pintarMesas(filtradas);
+            });
+
+            document.getElementById("btnLimpiar").addEventListener("click", () => {
+                document.getElementById("buscar").value = "";
+                pintarMesas(); // vuelve a pintar todo
+            });
+        }
+        buscarMesa();
+
+        // Mostrar y ocultar el modal
+        document.getElementById("btnMostrarMesas").addEventListener("click", () => {
+            document.getElementById("modalMesas").style.display = "block";
+            pintarMesas(); // Actualiza contenido al abrir
+        });
+
+        document.getElementById("cerrarModal").addEventListener("click", () => {
+            document.getElementById("modalMesas").style.display = "none";
+        });
+
+        // Cierra el modal si se hace clic fuera del contenido
+        window.addEventListener("click", (e) => {
+            const modal = document.getElementById("modalMesas");
+            if (e.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+
+    </script>
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            background-image: url('https://watermark.lovepik.com/photo/20211209/large/lovepik-healthy-eating-vegetable-food-material-background-picture_501697054.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .formulario {
+            border: 2px;
+            border-radius: 10px;
+            background-color: white;
+            width: 60%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .campos {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 80%;
+            height: 80vh;
+        }
+
+        #mesa {
+            height: 100px;
+            width: 100px;
+        }
+
+        #divCard {
+            background-color: white;
+            border: 2px solid gray;
+            border-radius: 10px;
+            box-shadow: 3px 3px 3px gray;
+            padding: 20px;
+        }
+
+        #mesas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+
+        .libre {
+            background-color: ;
+        }
+
+        /* Estilos del modal */
+        .modal {
+            display: none;
+            /* Oculto por defecto */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Fondo oscuro */
+        }
+
+        .modal-contenido {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .cerrar {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cerrar:hover {
+            color: black;
+        }
+    </style>
+
+</body>
+
+</html>
