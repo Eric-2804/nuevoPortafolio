@@ -1,11 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador de citas</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administrador de Citas Veterinarias</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js"></script>
 </head>
+
 <body>
-    
+    <header>
+        <h1>Administrador de Citas Veterinaria</h1>
+    </header>
+
+    <main>
+
+        <div class="acciones">
+            <button id="btn-nueva-cita">Nueva Cita</button>
+            <input type="text" id="busqueda" placeholder="Buscar por mascota o propietario..." />
+            <select id="filtro-estado">
+                <option value="Todas">Todas</option>
+                <option value="Abierta">Abierta</option>
+                <option value="Terminada">Terminada</option>
+                <option value="Anulada">Anulada</option>
+            </select>
+        </div>
+
+        <div id="lista-citas" class="cards-container"></div>
+    </main>
+
+    <div id="modal-cita" class="modal oculto">
+        <form id="form-cita">
+            <h2 id="modal-titulo">Nueva Cita</h2>
+            <input type="hidden" id="id-cita" />
+            <label>Nombre de Mascota</label>
+            <input type="text" id="mascota" required />
+            <label>Nombre del Propietario</label>
+            <input type="text" id="propietario" required />
+            <label>Teléfono</label>
+            <input type="tel" id="telefono" required pattern="[0-9]+" />
+            <label>Fecha de la Cita</label>
+            <input type="date" id="fecha" required />
+            <label>Hora de la Cita</label>
+            <input type="time" id="hora" required />
+            <label>Tipo de Mascota</label>
+            <select id="tipo" required>
+                <option value="">Selecciona un tipo</option>
+                <option value="Perro">Perro</option>
+                <option value="Gato">Gato</option>
+                <option value="Ave">Ave</option>
+                <option value="Conejo">Conejo</option>
+                <option value="Hamster">Hámster</option>
+                <option value="Tortuga">Tortuga</option>
+                <option value="Pez">Pez</option>
+                <option value="Reptil">Reptil</option>
+                <option value="Caballo">Caballo</option>
+                <option value="Otro">Otro</option>
+            </select>
+            <label>Síntomas</label>
+            <textarea id="sintomas" maxlength="400" required></textarea>
+            <div class="acciones-form">
+                <button type="submit">Guardar</button>
+                <button type="button" id="btn-cerrar-modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal-confirmar" class="modal oculto">
+        <div class="contenido-confirmar">
+            <p>¿Estás seguro de eliminar esta cita?</p>
+            <button id="confirmar-eliminar">Sí</button>
+            <button id="cancelar-eliminar">No</button>
+        </div>
+    </div>
+
+
 </body>
+
 </html>
