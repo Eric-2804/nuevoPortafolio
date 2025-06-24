@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestion de Citas Veterinarias</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.10.1/sweetalert2.min.css">
 </head>
 
@@ -34,6 +34,7 @@
     <div id="modal-cita" class="modal oculto">
         <form id="form-cita">
             <h2 id="modal-titulo">Nueva Cita</h2>
+            <img id="animalImagen" src="" alt="Vista previa de animal" style="width: 100%; max-height: 200px; object-fit: contain; margin-bottom: 1rem;" />
             <input type="hidden" id="id-cita" />
             <label>Nombre de Mascota</label>
             <input type="text" id="mascota" required />
@@ -59,6 +60,12 @@
                 <option value="Caballo">Caballo</option>
                 <option value="Otro">Otro</option>
             </select>
+            <label>Estado de la Cita</label>
+            <select id="estado" required>
+                <option value="Abierta">Abierta</option>
+                <option value="Terminada">Terminada</option>
+                <option value="Anulada">Anulada</option>
+            </select>
             <label>Síntomas</label>
             <textarea id="sintomas" maxlength="400" required></textarea>
             <div class="acciones-form">
@@ -76,9 +83,6 @@
         </div>
     </div>
 
-    
 </body>
 
 </html>
-prueba
-a
