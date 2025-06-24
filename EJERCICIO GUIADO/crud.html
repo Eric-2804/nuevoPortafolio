@@ -55,6 +55,13 @@
             text-align: center;
         }
 
+        .mesa img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
         .mesa.ocupada {
             background: #f88;
         }
@@ -132,7 +139,7 @@
     </div>
 
     <script>
-        let datosMesa = []; // Arreglo donde se guardan todas las mesas
+        let datosMesa = [];
         let modoEditar = false;
         let numeroMesaEditar = "";
 
@@ -237,11 +244,12 @@
                 const div = document.createElement("div");
                 div.className = `mesa ${estado}`;
                 div.innerHTML = `
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Ru7ZYmZfb41oq__EzwzLiRIaMiE20gH90g&s" alt="Mesa">
         <h3>Mesa ${numero}</h3>
         <p>${descripcion}</p>
         <small>${personas} personas</small><br>
         <button onclick="editarMesaDesdeBoton('${numero}')">📝</button>
-        <button onclick="eliminarMesa('${numero}')">❌</button>
+        <button onclick="confirmarEliminar('${numero}')">❌</button>
       `;
                 contenedor.appendChild(div);
             });
@@ -261,9 +269,23 @@
             registrarBtn.textContent = "Editar Mesa";
         }
 
+        function confirmarEliminar(nro) {
+            Swal.fire({
+                title: "¿Eliminar mesa?",
+                text: `Se eliminará la mesa ${nro}`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then(result => {
+                if (result.isConfirmed) eliminarMesa(nro);
+            });
+        }
+
         function eliminarMesa(nro) {
             datosMesa = datosMesa.filter(m => m.numero !== nro);
             pintarMesas();
+            Swal.fire("Eliminada", "La mesa fue eliminada", "success");
         }
     </script>
 </body>
