@@ -1,74 +1,85 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Elementos del DOM
-    const formCita = document.getElementById('form-cita');
-    const listaCitas = document.getElementById('lista-citas');
-    const inputBusqueda = document.getElementById('busqueda');
-    const selectEstado = document.getElementById('filtro-estado');
-    const modalCita = document.getElementById('modal-cita');
-    const btnNuevaCita = document.getElementById('btn-nueva-cita');
-    const btnCerrarModal = document.getElementById('btn-cerrar-modal');
+document.addEventListener('DOMContentLoaded', () => {
+    // Elementos principales
+    const form = document.getElementById('form-cita');
+    const lista = document.getElementById('lista-citas');
+    const buscar = document.getElementById('busqueda');
+    const filtro = document.getElementById('filtro-estado');
+    const modal = document.getElementById('modal-cita');
+    const btnNueva = document.getElementById('btn-nueva-cita');
+    const btnCerrar = document.getElementById('btn-cerrar-modal');
+    const confirmarModal = document.getElementById('modal-confirmar');
+    const btnConfirmar = document.getElementById('confirmar-eliminar');
+    const btnCancelar = document.getElementById('cancelar-eliminar');
 
-    const inputMascota = document.getElementById('mascota');
-    const inputPropietario = document.getElementById('propietario');
-    const inputTelefono = document.getElementById('telefono');
-    const inputFecha = document.getElementById('fecha');
-    const inputHora = document.getElementById('hora');
-    const inputTipo = document.getElementById('tipo');
-    const inputSintomas = document.getElementById('sintomas');
-    const inputId = document.getElementById('id-cita');
-
-    const modalConfirmar = document.getElementById('modal-confirmar');
-    const btnConfirmarEliminar = document.getElementById('confirmar-eliminar');
-    const btnCancelarEliminar = document.getElementById('cancelar-eliminar');
+    // Inputs del formulario
+    const inputs = {
+        id: document.getElementById('id-cita'),
+        mascota: document.getElementById('mascota'),
+        propietario: document.getElementById('propietario'),
+        telefono: document.getElementById('telefono'),
+        fecha: document.getElementById('fecha'),
+        hora: document.getElementById('hora'),
+        tipo: document.getElementById('tipo'),
+        sintomas: document.getElementById('sintomas')
+    };
 
     let citas = JSON.parse(localStorage.getItem('citas')) || [];
     let idAEliminar = null;
 
-    // Funciones utilitarias
-    function guardarLocalStorage() {
-        localStorage.setItem('citas', JSON.stringify(citas));
-    }
+    // Funciones básicas
+    const guardarCitas = () => localStorage.setItem('citas', JSON.stringify(citas));
+    const generarId = () => Date.now();
 
-    function generarId() {
-        return Date.now();
-    }
+    const limpiarFormulario = () => {
+        form.reset();
+        inputs.id.value = '';
+    };
 
-    function abrirModal(titulo) {
-        if (!titulo) titulo = "Nueva Cita";
+    const abrirModal = (titulo = 'Nueva Cita') => {
         document.getElementById("modal-titulo").textContent = titulo;
-        modalCita.classList.remove("oculto");
-    }
+        modal.classList.remove("oculto");
+    };
 
-    function cerrarModal() {
-        modalCita.classList.add("oculto");
-    }
+    const cerrarModal = () => modal.classList.add("oculto");
 
-    function limpiarFormulario() {
-        formCita.reset();
-        inputId.value = "";
-    }
+    const esHoraValida = (hora) => {
+        const [h, m] = hora.split(':').map(Number);
+        const minutos = h * 60 + m;
+        return minutos >= 480 && minutos <= 1200;
+    };
 
-    function renderCitas() {
-        listaCitas.innerHTML = "";
-        const termino = inputBusqueda.value.trim().toLowerCase();
-        const estadoSeleccionado = selectEstado.value;
-
-        const citasFiltradas = citas.filter(function (cita) {
-            const coincideBusqueda =
-                cita.mascota.toLowerCase().includes(termino) ||
-                cita.propietario.toLowerCase().includes(termino);
-            const coincideEstado = estadoSeleccionado === "Todas" || cita.estado === estadoSeleccionado;
-            return coincideBusqueda && coincideEstado;
+    const mostrarAviso = (msg, tipo = 'warning') => {
+        Swal.fire({
+            icon: tipo,
+            title: tipo === 'success' ? '¡Éxito!' : 'Aviso',
+            text: msg,
+            timer: tipo === 'success' ? 2000 : null,
+            showConfirmButton: tipo !== 'success',
+            toast: tipo === 'success',
+            position: tipo === 'success' ? 'top-end' : 'center'
         });
+    };
 
-        if (citasFiltradas.length === 0) {
-            listaCitas.innerHTML = "<p>No hay citas que coincidan.</p>";
+    // Mostrar citas
+    const mostrarCitas = () => {
+        lista.innerHTML = '';
+        const texto = buscar.value.toLowerCase();
+        const estado = filtro.value;
+
+        const resultado = citas.filter(cita =>
+            (cita.mascota.toLowerCase().includes(texto) ||
+                cita.propietario.toLowerCase().includes(texto)) &&
+            (estado === "Todas" || cita.estado === estado)
+        );
+
+        if (resultado.length === 0) {
+            lista.innerHTML = "<p>No hay citas que coincidan.</p>";
             return;
         }
 
-        citasFiltradas.forEach(function (cita) {
+        resultado.forEach(cita => {
             const card = document.createElement("div");
-            card.classList.add("card");
+            card.className = "card";
             card.innerHTML = `
                 <h3>${cita.mascota} (${cita.tipo})</h3>
                 <p><strong>Propietario:</strong> ${cita.propietario}</p>
@@ -79,115 +90,106 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="acciones-card">
                     <button onclick="editarCita(${cita.id})">Editar</button>
                     <button onclick="confirmarEliminar(${cita.id})">Eliminar</button>
-                    <button onclick="completada(${cita.id})">Completada</button>
-                    <button onclick="anular(${cita.id})">Anular</button>
+                    <button onclick="cambiarEstado(${cita.id}, 'Terminada')">Completada</button>
+                    <button onclick="cambiarEstado(${cita.id}, 'Anulada')">Anular</button>
                 </div>
             `;
-            listaCitas.appendChild(card);
+            lista.appendChild(card);
         });
-    }
+    };
 
-    function guardarCita() {
-        const nuevaCita = {
-            id: inputId.value ? parseInt(inputId.value) : generarId(),
-            mascota: inputMascota.value.trim(),
-            propietario: inputPropietario.value.trim(),
-            telefono: inputTelefono.value.trim(),
-            fecha: inputFecha.value,
-            hora: inputHora.value,
-            tipo: inputTipo.value,
-            sintomas: inputSintomas.value.trim(),
+    const guardarCita = () => {
+        const hora = inputs.hora.value;
+        if (!esHoraValida(hora)) {
+            mostrarAviso("La veterinaria atiende de 8:00 AM a 8:00 PM");
+            return;
+        }
+
+        const esEdicion = inputs.id.value !== '';
+        const cita = {
+            id: esEdicion ? parseInt(inputs.id.value) : generarId(),
+            mascota: inputs.mascota.value.trim(),
+            propietario: inputs.propietario.value.trim(),
+            telefono: inputs.telefono.value.trim(),
+            fecha: inputs.fecha.value,
+            hora: inputs.hora.value,
+            tipo: inputs.tipo.value,
+            sintomas: inputs.sintomas.value.trim(),
             estado: "Abierta"
         };
 
-        const indice = citas.findIndex(function (cita) {
-            return cita.id === nuevaCita.id;
-        });
-
-        if (indice >= 0) {
-            citas[indice] = nuevaCita;
+        if (esEdicion) {
+            const i = citas.findIndex(c => c.id === cita.id);
+            citas[i] = cita;
         } else {
-            citas.push(nuevaCita);
+            citas.push(cita);
         }
 
-        guardarLocalStorage();
-        renderCitas();
+        guardarCitas();
+        mostrarCitas();
         cerrarModal();
-    }
+        mostrarAviso(esEdicion ? "Cita actualizada" : "Cita creada", 'success');
+    };
 
-    window.editarCita = function (id) {
-        const cita = citas.find(function (c) {
-            return c.id === id;
-        });
+    // Acciones globales
+    window.editarCita = (id) => {
+        const cita = citas.find(c => c.id === id);
         if (!cita) return;
 
-        inputId.value = cita.id;
-        inputMascota.value = cita.mascota;
-        inputPropietario.value = cita.propietario;
-        inputTelefono.value = cita.telefono;
-        inputFecha.value = cita.fecha;
-        inputHora.value = cita.hora;
-        inputTipo.value = cita.tipo;
-        inputSintomas.value = cita.sintomas;
+        Object.keys(inputs).forEach(key => {
+            inputs[key].value = cita[key];
+        });
 
         abrirModal("Editar Cita");
     };
 
-    window.confirmarEliminar = function (id) {
+    window.confirmarEliminar = (id) => {
         idAEliminar = id;
-        modalConfirmar.classList.remove("oculto");
+        confirmarModal.classList.remove("oculto");
     };
 
-    window.completada = function (id) {
+    window.cambiarEstado = (id, nuevoEstado) => {
         const cita = citas.find(c => c.id === id);
         if (!cita) return;
-        cita.estado = "Terminada";
-        guardarLocalStorage();
-        renderCitas();
+        cita.estado = nuevoEstado;
+        guardarCitas();
+        mostrarCitas();
     };
 
-    window.anular = function (id) {
-        const cita = citas.find(c => c.id === id);
-        if (!cita) return;
-        cita.estado = "Anulada";
-        guardarLocalStorage();
-        renderCitas();
-    };
-
-
-    function eliminarCita() {
-        if (idAEliminar !== null) {
-            citas = citas.filter(function (c) {
-                return c.id !== idAEliminar;
-            });
-            guardarLocalStorage();
-            renderCitas();
-            idAEliminar = null;
-        }
-        modalConfirmar.classList.add("oculto");
-    }
-
-    function cancelarEliminacion() {
+    const eliminarCita = () => {
+        citas = citas.filter(c => c.id !== idAEliminar);
+        guardarCitas();
+        mostrarCitas();
+        confirmarModal.classList.add("oculto");
         idAEliminar = null;
-        modalConfirmar.classList.add("oculto");
-    }
+    };
 
     // Eventos
-    btnNuevaCita.addEventListener("click", function () {
+    btnNueva.addEventListener("click", () => {
         limpiarFormulario();
         abrirModal("Nueva Cita");
     });
 
-    btnCerrarModal.addEventListener("click", cerrarModal);
-    inputBusqueda.addEventListener("input", renderCitas);
-    selectEstado.addEventListener("change", renderCitas);
-    formCita.addEventListener("submit", function (e) {
+    btnCerrar.addEventListener("click", cerrarModal);
+    buscar.addEventListener("input", mostrarCitas);
+    filtro.addEventListener("change", mostrarCitas);
+    form.addEventListener("submit", e => {
         e.preventDefault();
         guardarCita();
     });
-    btnConfirmarEliminar.addEventListener("click", eliminarCita);
-    btnCancelarEliminar.addEventListener("click", cancelarEliminacion);
 
-    // Inicializar
-    renderCitas();
+    btnConfirmar.addEventListener("click", eliminarCita);
+    btnCancelar.addEventListener("click", () => {
+        confirmarModal.classList.add("oculto");
+        idAEliminar = null;
+    });
+
+    inputs.hora.addEventListener("change", () => {
+        if (!esHoraValida(inputs.hora.value)) {
+            mostrarAviso("Recuerda: atención de 8:00 AM a 8:00 PM");
+        }
+    });
+
+    // Mostrar citas al cargar
+    mostrarCitas();
 });
